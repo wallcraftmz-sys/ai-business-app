@@ -4,6 +4,7 @@ import { useState } from "react";
 
 export default function GeneratePage() {
   const [topic, setTopic] = useState("");
+  const [type, setType] = useState("реклама");
   const [details, setDetails] = useState("");
   const [result, setResult] = useState("");
   const [loading, setLoading] = useState(false);
@@ -18,7 +19,7 @@ export default function GeneratePage() {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        type: "реклама",
+        type,
         topic,
         details,
         tone: "продающий",
@@ -36,6 +37,17 @@ export default function GeneratePage() {
       <h1 style={{ fontSize: 28, marginBottom: 20 }}>
         Генератор рекламы
       </h1>
+
+      <select
+  value={type}
+  onChange={(e) => setType(e.target.value)}
+  style={{ width: "100%", padding: 10, marginBottom: 10 }}
+>
+  <option value="реклама">Реклама</option>
+  <option value="пост">Пост для соцсетей</option>
+  <option value="описание">Описание товара</option>
+  <option value="email">Email клиенту</option>
+</select>
 
       <input
         placeholder="Например: доставка мебели"
