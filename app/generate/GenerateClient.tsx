@@ -72,11 +72,13 @@ export default function GenerateClient({ initialType }: Props) {
     <main
       style={{
         minHeight: "100vh",
-        background: "linear-gradient(180deg, #07090f 0%, #0b0f1a 100%)",
+        background:
+          "radial-gradient(circle at top left, #1b2450 0%, #0a0d18 45%, #05070d 100%)",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
         padding: "24px 16px",
+        color: "white",
       }}
     >
       <div
@@ -84,12 +86,12 @@ export default function GenerateClient({ initialType }: Props) {
           width: "100%",
           maxWidth: 430,
           minHeight: 820,
-          background: "#0d111b",
-          border: "1px solid #222938",
           borderRadius: 36,
           padding: 20,
-          boxShadow: "0 20px 60px rgba(0,0,0,0.45)",
-          color: "white",
+          background: "rgba(13, 17, 27, 0.82)",
+          border: "1px solid rgba(255,255,255,0.08)",
+          boxShadow: "0 30px 80px rgba(0,0,0,0.55)",
+          backdropFilter: "blur(18px)",
         }}
       >
         <div
@@ -97,20 +99,46 @@ export default function GenerateClient({ initialType }: Props) {
           style={{
             marginBottom: 16,
             cursor: "pointer",
-            color: "#8fa3ff",
+            color: "#9db0ff",
             fontSize: 16,
           }}
         >
           ← Назад
         </div>
 
-        <h1 style={{ fontSize: 28, marginBottom: 10 }}>
-          Генерация текста
-        </h1>
+        <div style={{ textAlign: "center", marginBottom: 18 }}>
+          <div
+            style={{
+              width: 72,
+              height: 72,
+              margin: "0 auto 14px",
+              borderRadius: 22,
+              background:
+                "linear-gradient(135deg, #6c7cff 0%, #a95cff 45%, #ff6ca8 100%)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              boxShadow: "0 12px 40px rgba(120,100,255,0.35)",
+            }}
+          >
+            <span style={{ fontSize: 30 }}>⚡</span>
+          </div>
 
-        <p style={{ color: "#9aa3b2", marginBottom: 16 }}>
-          Создай текст с помощью AI
-        </p>
+          <h1 style={{ fontSize: 30, margin: 0, fontWeight: 800 }}>
+            Генерация текста
+          </h1>
+
+          <p
+            style={{
+              color: "#aeb7cb",
+              marginTop: 10,
+              marginBottom: 0,
+              lineHeight: 1.5,
+            }}
+          >
+            Создай текст с помощью AI
+          </p>
+        </div>
 
         <select
           value={type}
@@ -118,9 +146,9 @@ export default function GenerateClient({ initialType }: Props) {
           style={{
             width: "100%",
             padding: 14,
-            borderRadius: 12,
-            border: "1px solid #333",
-            background: "#1b1f2a",
+            borderRadius: 14,
+            border: "1px solid rgba(255,255,255,0.08)",
+            background: "rgba(255,255,255,0.04)",
             color: "white",
             marginBottom: 12,
           }}
@@ -137,9 +165,9 @@ export default function GenerateClient({ initialType }: Props) {
           style={{
             width: "100%",
             padding: 14,
-            borderRadius: 12,
-            border: "1px solid #333",
-            background: "#1b1f2a",
+            borderRadius: 14,
+            border: "1px solid rgba(255,255,255,0.08)",
+            background: "rgba(255,255,255,0.04)",
             color: "white",
             marginBottom: 12,
           }}
@@ -156,9 +184,9 @@ export default function GenerateClient({ initialType }: Props) {
           style={{
             width: "100%",
             padding: 14,
-            borderRadius: 12,
-            border: "1px solid #333",
-            background: "#1b1f2a",
+            borderRadius: 14,
+            border: "1px solid rgba(255,255,255,0.08)",
+            background: "rgba(255,255,255,0.04)",
             color: "white",
             marginBottom: 12,
             boxSizing: "border-box",
@@ -173,12 +201,13 @@ export default function GenerateClient({ initialType }: Props) {
           style={{
             width: "100%",
             padding: 14,
-            borderRadius: 12,
-            border: "1px solid #333",
-            background: "#1b1f2a",
+            borderRadius: 14,
+            border: "1px solid rgba(255,255,255,0.08)",
+            background: "rgba(255,255,255,0.04)",
             color: "white",
             marginBottom: 14,
             boxSizing: "border-box",
+            resize: "vertical",
           }}
         />
 
@@ -187,14 +216,19 @@ export default function GenerateClient({ initialType }: Props) {
           disabled={loading}
           style={{
             width: "100%",
-            padding: 14,
-            borderRadius: 14,
+            padding: 16,
+            borderRadius: 18,
             border: "none",
-            background: loading ? "#3a3a3a" : "#4CAF50",
+            background: loading
+              ? "#40455f"
+              : "linear-gradient(135deg, #6c7cff 0%, #a95cff 45%, #ff6ca8 100%)",
             color: "white",
-            fontSize: 16,
-            fontWeight: 600,
+            fontSize: 17,
+            fontWeight: 700,
             cursor: loading ? "default" : "pointer",
+            boxShadow: loading
+              ? "none"
+              : "0 14px 40px rgba(120,100,255,0.35)",
           }}
         >
           {loading ? "Генерация..." : "Сгенерировать"}
@@ -203,29 +237,30 @@ export default function GenerateClient({ initialType }: Props) {
         <div
           style={{
             marginTop: 20,
-            background: "#141822",
-            borderRadius: 16,
+            background: "rgba(255,255,255,0.04)",
+            borderRadius: 18,
             padding: 14,
-            border: "1px solid #2a2f3c",
+            border: "1px solid rgba(255,255,255,0.06)",
           }}
         >
           <div
             style={{
               display: "flex",
               justifyContent: "space-between",
-              marginBottom: 8,
+              marginBottom: 10,
+              alignItems: "center",
             }}
           >
-            <div>Результат</div>
+            <div style={{ fontWeight: 700 }}>Результат</div>
 
             <button
               onClick={handleCopy}
               style={{
                 fontSize: 12,
-                background: "#222",
-                border: "1px solid #444",
-                borderRadius: 8,
-                padding: "4px 8px",
+                background: "rgba(255,255,255,0.04)",
+                border: "1px solid rgba(255,255,255,0.08)",
+                borderRadius: 10,
+                padding: "6px 10px",
                 color: "white",
                 cursor: "pointer",
               }}
@@ -234,7 +269,14 @@ export default function GenerateClient({ initialType }: Props) {
             </button>
           </div>
 
-          <div style={{ color: "#c9d1d9", lineHeight: 1.5 }}>
+          <div
+            style={{
+              color: "#d4dbeb",
+              lineHeight: 1.6,
+              minHeight: 90,
+              whiteSpace: "pre-wrap",
+            }}
+          >
             {result || "Здесь появится текст"}
           </div>
         </div>

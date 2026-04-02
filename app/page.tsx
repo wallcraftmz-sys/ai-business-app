@@ -10,121 +10,135 @@ export default function WelcomePage() {
       style={{
         minHeight: "100vh",
         background:
-          "radial-gradient(circle at 20% 20%, #1b2440 0%, #05070d 60%)",
+          "radial-gradient(circle at top left, #1b2450 0%, #0a0d18 45%, #05070d 100%)",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        padding: 20,
+        padding: "24px 16px",
         color: "white",
       }}
     >
       <div
         style={{
           width: "100%",
-          maxWidth: 420,
-          padding: 28,
-          borderRadius: 32,
-          background: "rgba(20, 26, 40, 0.65)",
-          backdropFilter: "blur(20px)",
-          border: "1px solid rgba(255,255,255,0.06)",
-          boxShadow: "0 40px 80px rgba(0,0,0,0.6)",
+          maxWidth: 430,
+          minHeight: 820,
+          borderRadius: 36,
+          padding: 24,
+          background: "rgba(13, 17, 27, 0.82)",
+          border: "1px solid rgba(255,255,255,0.08)",
+          boxShadow: "0 30px 80px rgba(0,0,0,0.55)",
+          backdropFilter: "blur(18px)",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
         }}
       >
-        {/* LOGO */}
-        <div style={{ textAlign: "center", marginBottom: 26 }}>
+        <div style={{ textAlign: "center", marginBottom: 24 }}>
           <div
             style={{
-              width: 90,
-              height: 90,
-              margin: "0 auto",
-              borderRadius: 24,
+              width: 110,
+              height: 110,
+              margin: "0 auto 18px",
+              borderRadius: 30,
               background:
-                "linear-gradient(135deg, #6c7cff, #b26cff, #ff6c9c)",
+                "linear-gradient(135deg, #6c7cff 0%, #a95cff 45%, #ff6ca8 100%)",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              boxShadow: "0 10px 30px rgba(120,120,255,0.4)",
+              boxShadow:
+                "0 0 0 1px rgba(255,255,255,0.05), 0 18px 50px rgba(120,100,255,0.45)",
+              position: "relative",
             }}
           >
-            <span style={{ fontSize: 36 }}>⚡</span>
+            <div
+              style={{
+                position: "absolute",
+                inset: -14,
+                borderRadius: 36,
+                background:
+                  "linear-gradient(135deg, #6c7cff 0%, #a95cff 45%, #ff6ca8 100%)",
+                filter: "blur(30px)",
+                opacity: 0.35,
+                zIndex: 0,
+              }}
+            />
+            <span style={{ fontSize: 46, zIndex: 1 }}>⚡</span>
           </div>
+
+          <h1
+            style={{
+              margin: 0,
+              fontSize: 42,
+              lineHeight: 1.05,
+              fontWeight: 800,
+              letterSpacing: "-0.02em",
+            }}
+          >
+            BizText AI
+          </h1>
+
+          <p
+            style={{
+              margin: "14px 0 0",
+              color: "#aeb7cb",
+              fontSize: 18,
+              lineHeight: 1.55,
+            }}
+          >
+            Генерируй тексты, рекламу и ответы клиентам за секунды
+          </p>
         </div>
 
-        {/* TITLE */}
-        <h1
-          style={{
-            fontSize: 34,
-            fontWeight: 800,
-            textAlign: "center",
-            marginBottom: 12,
-          }}
-        >
-          BizText AI
-        </h1>
-
-        <p
-          style={{
-            textAlign: "center",
-            color: "#9aa3b2",
-            fontSize: 15,
-            lineHeight: 1.6,
-            marginBottom: 24,
-          }}
-        >
-          Генерируй тексты, рекламу и ответы клиентам за секунды
-        </p>
-
-        {/* FEATURES */}
         <div
           style={{
             background: "rgba(255,255,255,0.04)",
-            borderRadius: 18,
-            padding: 16,
-            marginBottom: 26,
-            fontSize: 14,
-            color: "#cbd3e1",
-            lineHeight: 1.7,
+            border: "1px solid rgba(255,255,255,0.06)",
+            borderRadius: 22,
+            padding: 18,
+            marginBottom: 22,
+            color: "#d4dbeb",
+            fontSize: 16,
+            lineHeight: 1.8,
           }}
         >
-          • Реклама для бизнеса  
+          • Реклама для бизнеса
           <br />
-          • Ответы клиентам  
+          • Ответы клиентам
           <br />
-          • Описание товаров  
+          • Описание товаров
         </div>
 
-        {/* BUTTON LOGIN */}
         <button
           onClick={() => router.push("/home")}
           style={{
             width: "100%",
-            padding: 16,
+            padding: 17,
             borderRadius: 18,
             border: "none",
             background:
-              "linear-gradient(135deg, #6c7cff, #b26cff)",
+              "linear-gradient(135deg, #6c7cff 0%, #a95cff 45%, #ff6ca8 100%)",
             color: "white",
-            fontSize: 16,
+            fontSize: 18,
             fontWeight: 700,
             cursor: "pointer",
+            boxShadow: "0 14px 40px rgba(120,100,255,0.35)",
             marginBottom: 12,
-            boxShadow: "0 10px 30px rgba(100,100,255,0.4)",
           }}
         >
           Войти
         </button>
 
-        {/* BUTTON GUEST */}
         <button
           onClick={() => router.push("/home")}
           style={{
             width: "100%",
-            padding: 16,
+            padding: 17,
             borderRadius: 18,
             border: "1px solid rgba(255,255,255,0.08)",
             background: "rgba(255,255,255,0.03)",
             color: "white",
-            fontSize: 15,
+            fontSize: 17,
             fontWeight: 600,
             cursor: "pointer",
           }}

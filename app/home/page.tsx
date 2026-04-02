@@ -34,6 +34,7 @@ type HistoryItem = {
   text: string;
   topic: string;
   type: string;
+  language?: string;
   date: string;
 };
 
@@ -46,11 +47,7 @@ function HistoryList() {
   }, []);
 
   if (history.length === 0) {
-    return (
-      <div style={{ color: "#97a0b2" }}>
-        Пока нет сохранённых текстов
-      </div>
-    );
+    return <div style={{ color: "#9eabc3" }}>Пока нет сохранённых текстов</div>;
   }
 
   return (
@@ -59,23 +56,42 @@ function HistoryList() {
         <div
           key={i}
           style={{
-            background: "#141a27",
-            padding: 12,
-            borderRadius: 12,
-            fontSize: 14,
-            color: "#cbd3e1",
+            background: "rgba(255,255,255,0.04)",
+            border: "1px solid rgba(255,255,255,0.06)",
+            padding: 14,
+            borderRadius: 16,
           }}
         >
-          <div style={{ fontWeight: 700, marginBottom: 6 }}>
+          <div
+            style={{
+              color: "white",
+              fontSize: 14,
+              fontWeight: 700,
+              marginBottom: 6,
+              textTransform: "capitalize",
+            }}
+          >
             {item.type}
           </div>
 
-          <div style={{ opacity: 0.9, marginBottom: 6 }}>
+          <div
+            style={{
+              color: "#b8c2d8",
+              fontSize: 14,
+              marginBottom: 6,
+            }}
+          >
             {item.topic || "Без темы"}
           </div>
 
-          <div style={{ color: "#aab4c5", lineHeight: 1.5 }}>
-            {item.text.slice(0, 80)}...
+          <div
+            style={{
+              color: "#99a5bc",
+              fontSize: 13,
+              lineHeight: 1.5,
+            }}
+          >
+            {item.text.slice(0, 90)}...
           </div>
         </div>
       ))}
@@ -88,11 +104,13 @@ export default function HomePage() {
     <main
       style={{
         minHeight: "100vh",
-        background: "linear-gradient(180deg, #07090f 0%, #0b0f1a 100%)",
+        background:
+          "radial-gradient(circle at top left, #1b2450 0%, #0a0d18 45%, #05070d 100%)",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
         padding: "24px 16px",
+        color: "white",
       }}
     >
       <div
@@ -100,62 +118,82 @@ export default function HomePage() {
           width: "100%",
           maxWidth: 430,
           minHeight: 820,
-          background: "#0d111b",
-          border: "1px solid #222938",
           borderRadius: 36,
           padding: 20,
-          boxShadow: "0 20px 60px rgba(0,0,0,0.45)",
-          color: "white",
+          background: "rgba(13, 17, 27, 0.82)",
+          border: "1px solid rgba(255,255,255,0.08)",
+          boxShadow: "0 30px 80px rgba(0,0,0,0.55)",
+          backdropFilter: "blur(18px)",
         }}
       >
-        <div
-          style={{
-            textAlign: "center",
-            fontSize: 13,
-            color: "#8d95a7",
-            marginBottom: 18,
-          }}
-        >
-          AI-business-app
+        <div style={{ textAlign: "center", marginBottom: 18 }}>
+          <div
+            style={{
+              width: 76,
+              height: 76,
+              margin: "0 auto 14px",
+              borderRadius: 22,
+              background:
+                "linear-gradient(135deg, #6c7cff 0%, #a95cff 45%, #ff6ca8 100%)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              boxShadow: "0 12px 40px rgba(120,100,255,0.35)",
+            }}
+          >
+            <span style={{ fontSize: 32 }}>⚡</span>
+          </div>
+
+          <div
+            style={{
+              fontSize: 13,
+              color: "#8d97ad",
+              marginBottom: 8,
+            }}
+          >
+            BizText AI
+          </div>
+
+          <h1
+            style={{
+              margin: 0,
+              fontSize: 34,
+              lineHeight: 1.08,
+              fontWeight: 800,
+            }}
+          >
+            AI-инструмент
+            <br />
+            для бизнеса
+          </h1>
+
+          <p
+            style={{
+              color: "#aeb7cb",
+              fontSize: 16,
+              lineHeight: 1.55,
+              marginTop: 14,
+              marginBottom: 0,
+            }}
+          >
+            Создавай тексты для бизнеса за секунды
+          </p>
         </div>
-
-        <h1
-          style={{
-            fontSize: 40,
-            lineHeight: 1.05,
-            fontWeight: 800,
-            margin: "0 0 14px 0",
-          }}
-        >
-          AI-инструмент
-          <br />
-          для бизнеса
-        </h1>
-
-        <p
-          style={{
-            color: "#aab1c2",
-            fontSize: 18,
-            lineHeight: 1.5,
-            marginBottom: 22,
-          }}
-        >
-          Создавай тексты для бизнеса за секунды
-        </p>
 
         <div style={{ display: "grid", gap: 14 }}>
           {cards.map((card) => {
             const content = (
               <div
                 style={{
-                  background: "#141a27",
-                  border: "1px solid #242c3d",
+                  background: "rgba(255,255,255,0.04)",
+                  border: "1px solid rgba(255,255,255,0.06)",
                   borderRadius: 22,
                   padding: 18,
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "space-between",
                   gap: 12,
+                  boxShadow: "0 10px 30px rgba(0,0,0,0.18)",
                 }}
               >
                 <div
@@ -167,10 +205,11 @@ export default function HomePage() {
                 >
                   <div
                     style={{
-                      width: 54,
-                      height: 54,
+                      width: 56,
+                      height: 56,
                       borderRadius: 18,
-                      background: "#1b2231",
+                      background:
+                        "linear-gradient(135deg, rgba(108,124,255,0.22), rgba(255,108,168,0.18))",
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
@@ -184,7 +223,7 @@ export default function HomePage() {
                   <div>
                     <div
                       style={{
-                        fontSize: 20,
+                        fontSize: 22,
                         fontWeight: 700,
                         marginBottom: 4,
                       }}
@@ -194,7 +233,7 @@ export default function HomePage() {
 
                     <div
                       style={{
-                        color: "#97a0b2",
+                        color: "#9eabc3",
                         fontSize: 15,
                         lineHeight: 1.35,
                       }}
@@ -206,7 +245,7 @@ export default function HomePage() {
 
                 <div
                   style={{
-                    color: "#8e97aa",
+                    color: "#9aa6be",
                     fontSize: 24,
                     flexShrink: 0,
                   }}
@@ -244,17 +283,17 @@ export default function HomePage() {
           id="history"
           style={{
             marginTop: 22,
-            background: "#121826",
-            border: "1px solid #232b3b",
+            background: "rgba(255,255,255,0.04)",
+            border: "1px solid rgba(255,255,255,0.06)",
             borderRadius: 22,
             padding: 18,
           }}
         >
           <div
             style={{
-              fontSize: 20,
+              fontSize: 22,
               fontWeight: 700,
-              marginBottom: 10,
+              marginBottom: 12,
             }}
           >
             История
