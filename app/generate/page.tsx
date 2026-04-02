@@ -6,16 +6,19 @@ export default function Page() {
   const [text, setText] = useState("");
 
   async function generate() {
-    const res = await fetch("/api/generate-text", {
-      method: "POST",
-      body: JSON.stringify({
-        type: "реклама",
-        topic: "доставка мебели",
-        details: "быстро, Рига, до двери",
-        tone: "продающий",
-        language: "ru",
-      }),
-    });
+  const res = await fetch("/api/generate-text", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify({
+    type: "реклама",
+    topic: "доставка мебели",
+    details: "быстро, Рига, до двери",
+    tone: "продающий",
+    language: "ru",
+  }),
+});
 
     const data = await res.json();
     setText(data.text);
