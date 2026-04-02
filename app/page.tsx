@@ -1,267 +1,136 @@
 "use client";
 
-import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
-const cards = [
-  {
-    title: "Реклама",
-    description: "Создать рекламный текст",
-    href: "/generate?type=реклама",
-    icon: "📢",
-  },
-  {
-    title: "Ответ клиенту",
-    description: "Подготовить ответ клиенту",
-    href: "/generate?type=ответ",
-    icon: "💬",
-  },
-  {
-    title: "Описание товара",
-    description: "Написать описание товара",
-    href: "/generate?type=описание",
-    icon: "🏷️",
-  },
-  {
-    title: "История",
-    description: "Посмотреть прошлые тексты",
-    href: "#history",
-    icon: "🕘",
-  },
-];
+export default function WelcomePage() {
+  const router = useRouter();
 
-type HistoryItem = {
-  text: string;
-  topic: string;
-  type: string;
-  date: string;
-};
-
-function HistoryList() {
-  const [history, setHistory] = useState<HistoryItem[]>([]);
-
-  useEffect(() => {
-    const saved = JSON.parse(localStorage.getItem("history") || "[]");
-    setHistory(saved);
-  }, []);
-
-  if (history.length === 0) {
-    return (
-      <div style={{ color: "#97a0b2" }}>
-        Пока нет сохранённых текстов
-      </div>
-    );
-  }
-
-  return (
-    <div style={{ display: "grid", gap: 10 }}>
-      {history.slice(0, 5).map((item, i) => (
-        <div
-          key={i}
-          style={{
-            background: "#141a27",
-            padding: 12,
-            borderRadius: 12,
-            fontSize: 14,
-            color: "#cbd3e1",
-          }}
-        >
-          <div style={{ fontWeight: 700, marginBottom: 6 }}>
-            {item.type}
-          </div>
-
-          <div style={{ opacity: 0.9, marginBottom: 6 }}>
-            {item.topic || "Без темы"}
-          </div>
-
-          <div style={{ color: "#aab4c5", lineHeight: 1.5 }}>
-            {item.text.slice(0, 80)}...
-          </div>
-        </div>
-      ))}
-    </div>
-  );
-}
-
-export default function HomePage() {
   return (
     <main
       style={{
         minHeight: "100vh",
-        background: "linear-gradient(180deg, #07090f 0%, #0b0f1a 100%)",
+        background:
+          "radial-gradient(circle at 20% 20%, #1b2440 0%, #05070d 60%)",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        padding: "24px 16px",
+        padding: 20,
+        color: "white",
       }}
     >
       <div
         style={{
           width: "100%",
-          maxWidth: 430,
-          minHeight: 820,
-          background: "#0d111b",
-          border: "1px solid #222938",
-          borderRadius: 36,
-          padding: 20,
-          boxShadow: "0 20px 60px rgba(0,0,0,0.45)",
-          color: "white",
+          maxWidth: 420,
+          padding: 28,
+          borderRadius: 32,
+          background: "rgba(20, 26, 40, 0.65)",
+          backdropFilter: "blur(20px)",
+          border: "1px solid rgba(255,255,255,0.06)",
+          boxShadow: "0 40px 80px rgba(0,0,0,0.6)",
         }}
       >
-        <div
-          style={{
-            textAlign: "center",
-            fontSize: 13,
-            color: "#8d95a7",
-            marginBottom: 18,
-          }}
-        >
-          AI-business-app
+        {/* LOGO */}
+        <div style={{ textAlign: "center", marginBottom: 26 }}>
+          <div
+            style={{
+              width: 90,
+              height: 90,
+              margin: "0 auto",
+              borderRadius: 24,
+              background:
+                "linear-gradient(135deg, #6c7cff, #b26cff, #ff6c9c)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              boxShadow: "0 10px 30px rgba(120,120,255,0.4)",
+            }}
+          >
+            <span style={{ fontSize: 36 }}>⚡</span>
+          </div>
         </div>
 
+        {/* TITLE */}
         <h1
           style={{
-            fontSize: 40,
-            lineHeight: 1.05,
+            fontSize: 34,
             fontWeight: 800,
-            margin: "0 0 14px 0",
+            textAlign: "center",
+            marginBottom: 12,
           }}
         >
-          AI-инструмент
-          <br />
-          для бизнеса
+          BizText AI
         </h1>
 
         <p
           style={{
-            color: "#aab1c2",
-            fontSize: 18,
-            lineHeight: 1.5,
-            marginBottom: 22,
+            textAlign: "center",
+            color: "#9aa3b2",
+            fontSize: 15,
+            lineHeight: 1.6,
+            marginBottom: 24,
           }}
         >
-          Создавай тексты для бизнеса за секунды
+          Генерируй тексты, рекламу и ответы клиентам за секунды
         </p>
 
-        <div style={{ display: "grid", gap: 14 }}>
-          {cards.map((card) => {
-            const content = (
-              <div
-                style={{
-                  background: "#141a27",
-                  border: "1px solid #242c3d",
-                  borderRadius: 22,
-                  padding: 18,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  gap: 12,
-                }}
-              >
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 14,
-                  }}
-                >
-                  <div
-                    style={{
-                      width: 54,
-                      height: 54,
-                      borderRadius: 18,
-                      background: "#1b2231",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      fontSize: 25,
-                      flexShrink: 0,
-                    }}
-                  >
-                    {card.icon}
-                  </div>
-
-                  <div>
-                    <div
-                      style={{
-                        fontSize: 20,
-                        fontWeight: 700,
-                        marginBottom: 4,
-                      }}
-                    >
-                      {card.title}
-                    </div>
-
-                    <div
-                      style={{
-                        color: "#97a0b2",
-                        fontSize: 15,
-                        lineHeight: 1.35,
-                      }}
-                    >
-                      {card.description}
-                    </div>
-                  </div>
-                </div>
-
-                <div
-                  style={{
-                    color: "#8e97aa",
-                    fontSize: 24,
-                    flexShrink: 0,
-                  }}
-                >
-                  ›
-                </div>
-              </div>
-            );
-
-            if (card.href === "#history") {
-              return (
-                <a
-                  key={card.title}
-                  href="#history"
-                  style={{ textDecoration: "none", color: "inherit" }}
-                >
-                  {content}
-                </a>
-              );
-            }
-
-            return (
-              <Link
-                key={card.title}
-                href={card.href}
-                style={{ textDecoration: "none", color: "inherit" }}
-              >
-                {content}
-              </Link>
-            );
-          })}
-        </div>
-
+        {/* FEATURES */}
         <div
-          id="history"
           style={{
-            marginTop: 22,
-            background: "#121826",
-            border: "1px solid #232b3b",
-            borderRadius: 22,
-            padding: 18,
+            background: "rgba(255,255,255,0.04)",
+            borderRadius: 18,
+            padding: 16,
+            marginBottom: 26,
+            fontSize: 14,
+            color: "#cbd3e1",
+            lineHeight: 1.7,
           }}
         >
-          <div
-            style={{
-              fontSize: 20,
-              fontWeight: 700,
-              marginBottom: 10,
-            }}
-          >
-            История
-          </div>
-
-          <HistoryList />
+          • Реклама для бизнеса  
+          <br />
+          • Ответы клиентам  
+          <br />
+          • Описание товаров  
         </div>
+
+        {/* BUTTON LOGIN */}
+        <button
+          onClick={() => router.push("/home")}
+          style={{
+            width: "100%",
+            padding: 16,
+            borderRadius: 18,
+            border: "none",
+            background:
+              "linear-gradient(135deg, #6c7cff, #b26cff)",
+            color: "white",
+            fontSize: 16,
+            fontWeight: 700,
+            cursor: "pointer",
+            marginBottom: 12,
+            boxShadow: "0 10px 30px rgba(100,100,255,0.4)",
+          }}
+        >
+          Войти
+        </button>
+
+        {/* BUTTON GUEST */}
+        <button
+          onClick={() => router.push("/home")}
+          style={{
+            width: "100%",
+            padding: 16,
+            borderRadius: 18,
+            border: "1px solid rgba(255,255,255,0.08)",
+            background: "rgba(255,255,255,0.03)",
+            color: "white",
+            fontSize: 15,
+            fontWeight: 600,
+            cursor: "pointer",
+          }}
+        >
+          Продолжить без входа
+        </button>
       </div>
     </main>
   );

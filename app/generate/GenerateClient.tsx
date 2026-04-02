@@ -93,7 +93,7 @@ export default function GenerateClient({ initialType }: Props) {
         }}
       >
         <div
-          onClick={() => router.push("/")}
+          onClick={() => router.push("/home")}
           style={{
             marginBottom: 16,
             cursor: "pointer",
