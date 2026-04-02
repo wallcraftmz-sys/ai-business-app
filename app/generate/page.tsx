@@ -38,16 +38,27 @@ export default function GeneratePage() {
         Генератор рекламы
       </h1>
 
-      <select
-  value={type}
-  onChange={(e) => setType(e.target.value)}
-  style={{ width: "100%", padding: 10, marginBottom: 10 }}
->
-  <option value="реклама">Реклама</option>
-  <option value="пост">Пост для соцсетей</option>
-  <option value="описание">Описание товара</option>
-  <option value="email">Email клиенту</option>
-</select>
+    <div style={{ marginBottom: 10 }}>
+  <label style={{ display: "block", marginBottom: 8 }}>
+    Выбери тип текста
+  </label>
+
+  <select
+    value={type}
+    onChange={(e) => setType(e.target.value)}
+    style={{
+      width: "100%",
+      padding: 12,
+      marginBottom: 10,
+      fontSize: 16,
+    }}
+  >
+    <option value="реклама">Реклама</option>
+    <option value="пост">Пост для соцсетей</option>
+    <option value="описание">Описание товара</option>
+    <option value="email">Email клиенту</option>
+  </select>
+</div>
 
       <input
         placeholder="Например: доставка мебели"
