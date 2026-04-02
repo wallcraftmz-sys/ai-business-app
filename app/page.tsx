@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 const cards = [
   {
@@ -22,10 +25,63 @@ const cards = [
   {
     title: "История",
     description: "Посмотреть прошлые тексты",
-    href: "#",
+    href: "#history",
     icon: "🕘",
   },
 ];
+
+type HistoryItem = {
+  text: string;
+  topic: string;
+  type: string;
+  date: string;
+};
+
+function HistoryList() {
+  const [history, setHistory] = useState<HistoryItem[]>([]);
+
+  useEffect(() => {
+    const saved = JSON.parse(localStorage.getItem("history") || "[]");
+    setHistory(saved);
+  }, []);
+
+  if (history.length === 0) {
+    return (
+      <div style={{ color: "#97a0b2" }}>
+        Пока нет сохранённых текстов
+      </div>
+    );
+  }
+
+  return (
+    <div style={{ display: "grid", gap: 10 }}>
+      {history.slice(0, 5).map((item, i) => (
+        <div
+          key={i}
+          style={{
+            background: "#141a27",
+            padding: 12,
+            borderRadius: 12,
+            fontSize: 14,
+            color: "#cbd3e1",
+          }}
+        >
+          <div style={{ fontWeight: 700, marginBottom: 6 }}>
+            {item.type}
+          </div>
+
+          <div style={{ opacity: 0.9, marginBottom: 6 }}>
+            {item.topic || "Без темы"}
+          </div>
+
+          <div style={{ color: "#aab4c5", lineHeight: 1.5 }}>
+            {item.text.slice(0, 80)}...
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
 
 export default function HomePage() {
   return (
@@ -160,8 +216,16 @@ export default function HomePage() {
               </div>
             );
 
-            if (card.href === "#") {
-              return <div key={card.title}>{content}</div>;
+            if (card.href === "#history") {
+              return (
+                <a
+                  key={card.title}
+                  href="#history"
+                  style={{ textDecoration: "none", color: "inherit" }}
+                >
+                  {content}
+                </a>
+              );
             }
 
             return (
@@ -177,6 +241,7 @@ export default function HomePage() {
         </div>
 
         <div
+          id="history"
           style={{
             marginTop: 22,
             background: "#121826",
@@ -189,21 +254,13 @@ export default function HomePage() {
             style={{
               fontSize: 20,
               fontWeight: 700,
-              marginBottom: 8,
+              marginBottom: 10,
             }}
           >
             История
           </div>
 
-          <div
-            style={{
-              color: "#97a0b2",
-              fontSize: 15,
-              lineHeight: 1.5,
-            }}
-          >
-            Здесь позже появятся последние созданные тексты.
-          </div>
+          <HistoryList />
         </div>
       </div>
     </main>

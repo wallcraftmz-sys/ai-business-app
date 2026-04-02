@@ -43,6 +43,17 @@ export default function GenerateClient({ initialType }: Props) {
       }
 
       setResult(data.text || "");
+      // сохраняем в историю
+const history = JSON.parse(localStorage.getItem("history") || "[]");
+
+history.unshift({
+  text: data.text,
+  topic,
+  type,
+  date: new Date().toISOString(),
+});
+
+localStorage.setItem("history", JSON.stringify(history.slice(0, 20)));
     } catch {
       setResult("Ошибка запроса");
     } finally {
