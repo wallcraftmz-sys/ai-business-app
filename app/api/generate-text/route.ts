@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { openai } from "@/lib/openai";
+import { getOpenAI } from "@/lib/openai";
 
 export async function POST(req: Request) {
   try {
@@ -28,6 +28,7 @@ export async function POST(req: Request) {
 Не выдумывай факты.
 `;
 
+const openai = getOpenAI();
     const response = await openai.responses.create({
       model: "gpt-5-mini",
       input: prompt,
