@@ -1,12 +1,5 @@
-import GenerateClient from "./GenerateClient";
+import { redirect } from "next/navigation";
 
-type PageProps = {
-  searchParams?: Promise<{ type?: string }>;
-};
-
-export default async function GeneratePage({ searchParams }: PageProps) {
-  const params = await searchParams;
-  const initialType = params?.type || "реклама";
-
-  return <GenerateClient initialType={initialType} />;
+export default function GeneratePage() {
+  redirect("/generate/ad");
 }
