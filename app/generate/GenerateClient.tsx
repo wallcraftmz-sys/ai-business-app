@@ -13,6 +13,7 @@ export default function GenerateClient({ initialType }: Props) {
   const [type, setType] = useState(initialType || "реклама");
   const [topic, setTopic] = useState("");
   const [details, setDetails] = useState("");
+  const [language, setLanguage] = useState("ru");
   const [result, setResult] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -31,7 +32,7 @@ export default function GenerateClient({ initialType }: Props) {
           topic,
           details,
           tone: "продающий",
-          language: "ru",
+          language,
         }),
       });
 
@@ -43,17 +44,18 @@ export default function GenerateClient({ initialType }: Props) {
       }
 
       setResult(data.text || "");
-      // сохраняем в историю
-const history = JSON.parse(localStorage.getItem("history") || "[]");
 
-history.unshift({
-  text: data.text,
-  topic,
-  type,
-  date: new Date().toISOString(),
-});
+      const history = JSON.parse(localStorage.getItem("history") || "[]");
 
-localStorage.setItem("history", JSON.stringify(history.slice(0, 20)));
+      history.unshift({
+        text: data.text,
+        topic,
+        type,
+        language,
+        date: new Date().toISOString(),
+      });
+
+      localStorage.setItem("history", JSON.stringify(history.slice(0, 20)));
     } catch {
       setResult("Ошибка запроса");
     } finally {
@@ -127,6 +129,24 @@ localStorage.setItem("history", JSON.stringify(history.slice(0, 20)));
           <option value="ответ">Ответ клиенту</option>
           <option value="описание">Описание товара</option>
           <option value="email">Email</option>
+        </select>
+
+        <select
+          value={language}
+          onChange={(e) => setLanguage(e.target.value)}
+          style={{
+            width: "100%",
+            padding: 14,
+            borderRadius: 12,
+            border: "1px solid #333",
+            background: "#1b1f2a",
+            color: "white",
+            marginBottom: 12,
+          }}
+        >
+          <option value="ru">Русский</option>
+          <option value="lv">Latviešu</option>
+          <option value="en">English</option>
         </select>
 
         <input
