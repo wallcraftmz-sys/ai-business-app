@@ -3,25 +3,25 @@ import Link from "next/link";
 const cards = [
   {
     title: "Реклама",
-    description: "Создать рекламный текст для бизнеса",
+    description: "Создать рекламный текст",
     href: "/generate?type=реклама",
     icon: "📢",
   },
   {
     title: "Ответ клиенту",
-    description: "Подготовить ответ на сообщение клиента",
+    description: "Подготовить ответ клиенту",
     href: "/generate?type=ответ",
     icon: "💬",
   },
   {
     title: "Описание товара",
-    description: "Написать описание товара или услуги",
+    description: "Написать описание товара",
     href: "/generate?type=описание",
     icon: "🏷️",
   },
   {
     title: "История",
-    description: "Посмотреть сохранённые тексты позже",
+    description: "Посмотреть прошлые тексты",
     href: "#",
     icon: "🕘",
   },
@@ -32,95 +32,94 @@ export default function HomePage() {
     <main
       style={{
         minHeight: "100vh",
-        background:
-          "linear-gradient(180deg, #090909 0%, #0d0d0d 100%)",
-        color: "white",
-        padding: "32px 20px 48px",
+        background: "linear-gradient(180deg, #07090f 0%, #0b0f1a 100%)",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        padding: "24px 16px",
       }}
     >
       <div
         style={{
-          maxWidth: 780,
-          margin: "0 auto",
+          width: "100%",
+          maxWidth: 430,
+          minHeight: 820,
+          background: "#0d111b",
+          border: "1px solid #222938",
+          borderRadius: 36,
+          padding: 20,
+          boxShadow: "0 20px 60px rgba(0,0,0,0.45)",
+          color: "white",
         }}
       >
-        <div style={{ marginBottom: 28 }}>
-          <div
-            style={{
-              fontSize: 14,
-              color: "#8f8f8f",
-              marginBottom: 14,
-            }}
-          >
-            AI-business-app
-          </div>
-
-          <h1
-            style={{
-              fontSize: 42,
-              lineHeight: 1.1,
-              margin: 0,
-              fontWeight: 800,
-            }}
-          >
-            AI-инструмент
-            <br />
-            для бизнеса
-          </h1>
-
-          <p
-            style={{
-              color: "#b3b3b3",
-              fontSize: 18,
-              lineHeight: 1.6,
-              marginTop: 16,
-              maxWidth: 560,
-            }}
-          >
-            Создавай рекламные тексты, ответы клиентам и описания
-            товаров за секунды.
-          </p>
-        </div>
-
         <div
           style={{
-            display: "grid",
-            gap: 16,
-            marginBottom: 28,
+            textAlign: "center",
+            fontSize: 13,
+            color: "#8d95a7",
+            marginBottom: 18,
           }}
         >
+          AI-business-app
+        </div>
+
+        <h1
+          style={{
+            fontSize: 40,
+            lineHeight: 1.05,
+            fontWeight: 800,
+            margin: "0 0 14px 0",
+          }}
+        >
+          AI-инструмент
+          <br />
+          для бизнеса
+        </h1>
+
+        <p
+          style={{
+            color: "#aab1c2",
+            fontSize: 18,
+            lineHeight: 1.5,
+            marginBottom: 22,
+          }}
+        >
+          Создавай тексты для бизнеса за секунды
+        </p>
+
+        <div style={{ display: "grid", gap: 14 }}>
           {cards.map((card) => {
             const content = (
               <div
                 style={{
-                  backgroundColor: "#141414",
-                  border: "1px solid #2a2a2a",
+                  background: "#141a27",
+                  border: "1px solid #242c3d",
                   borderRadius: 22,
-                  padding: 20,
+                  padding: 18,
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "space-between",
-                  gap: 16,
-                  boxShadow: "0 8px 30px rgba(0,0,0,0.25)",
+                  gap: 12,
                 }}
               >
                 <div
                   style={{
                     display: "flex",
                     alignItems: "center",
-                    gap: 16,
+                    gap: 14,
                   }}
                 >
                   <div
                     style={{
                       width: 54,
                       height: 54,
-                      borderRadius: 16,
-                      backgroundColor: "#1f1f1f",
+                      borderRadius: 18,
+                      background: "#1b2231",
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
-                      fontSize: 26,
+                      fontSize: 25,
+                      flexShrink: 0,
                     }}
                   >
                     {card.icon}
@@ -129,9 +128,9 @@ export default function HomePage() {
                   <div>
                     <div
                       style={{
-                        fontSize: 30,
+                        fontSize: 20,
                         fontWeight: 700,
-                        marginBottom: 6,
+                        marginBottom: 4,
                       }}
                     >
                       {card.title}
@@ -139,9 +138,9 @@ export default function HomePage() {
 
                     <div
                       style={{
-                        color: "#a8a8a8",
-                        fontSize: 18,
-                        lineHeight: 1.4,
+                        color: "#97a0b2",
+                        fontSize: 15,
+                        lineHeight: 1.35,
                       }}
                     >
                       {card.description}
@@ -151,8 +150,8 @@ export default function HomePage() {
 
                 <div
                   style={{
-                    fontSize: 28,
-                    color: "#8d8d8d",
+                    color: "#8e97aa",
+                    fontSize: 24,
                     flexShrink: 0,
                   }}
                 >
@@ -179,17 +178,18 @@ export default function HomePage() {
 
         <div
           style={{
-            backgroundColor: "#121212",
-            border: "1px solid #262626",
+            marginTop: 22,
+            background: "#121826",
+            border: "1px solid #232b3b",
             borderRadius: 22,
-            padding: 20,
+            padding: 18,
           }}
         >
           <div
             style={{
-              fontSize: 18,
+              fontSize: 20,
               fontWeight: 700,
-              marginBottom: 10,
+              marginBottom: 8,
             }}
           >
             История
@@ -197,12 +197,12 @@ export default function HomePage() {
 
           <div
             style={{
-              color: "#a5a5a5",
-              lineHeight: 1.6,
-              fontSize: 16,
+              color: "#97a0b2",
+              fontSize: 15,
+              lineHeight: 1.5,
             }}
           >
-            Здесь позже появятся последние сгенерированные тексты.
+            Здесь позже появятся последние созданные тексты.
           </div>
         </div>
       </div>
