@@ -7,25 +7,25 @@ const cards = [
   {
     title: "Реклама",
     description: "Создать рекламный текст",
-    href: "/generate?type=реклама",
+    href: "/generate/ad",
     icon: "📢",
   },
   {
     title: "Ответ клиенту",
     description: "Подготовить ответ клиенту",
-    href: "/generate?type=ответ",
+    href: "/generate/reply",
     icon: "💬",
   },
   {
     title: "Описание товара",
     description: "Написать описание товара",
-    href: "/generate?type=описание",
+    href: "/generate/product",
     icon: "🏷️",
   },
   {
     title: "История",
     description: "Посмотреть прошлые тексты",
-    href: "#history",
+    href: "/history",
     icon: "🕘",
   },
 ];

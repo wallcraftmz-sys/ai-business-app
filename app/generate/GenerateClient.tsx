@@ -4,13 +4,18 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 type Props = {
-  initialType: string;
+  fixedType: string;
+  title: string;
+  subtitle: string;
 };
 
-export default function GenerateClient({ initialType }: Props) {
+export default function GenerateClient({
+  fixedType,
+  title,
+  subtitle,
+}: Props) {
   const router = useRouter();
 
-  const [type, setType] = useState(initialType || "реклама");
   const [topic, setTopic] = useState("");
   const [details, setDetails] = useState("");
   const [language, setLanguage] = useState("ru");
@@ -28,7 +33,7 @@ export default function GenerateClient({ initialType }: Props) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          type,
+          type: fixedType,
           topic,
           details,
           tone: "продающий",
@@ -50,7 +55,7 @@ export default function GenerateClient({ initialType }: Props) {
       history.unshift({
         text: data.text,
         topic,
-        type,
+        type: fixedType,
         language,
         date: new Date().toISOString(),
       });
@@ -125,7 +130,7 @@ export default function GenerateClient({ initialType }: Props) {
           </div>
 
           <h1 style={{ fontSize: 30, margin: 0, fontWeight: 800 }}>
-            Генерация текста
+            {title}
           </h1>
 
           <p
@@ -136,28 +141,9 @@ export default function GenerateClient({ initialType }: Props) {
               lineHeight: 1.5,
             }}
           >
-            Создай текст с помощью AI
+            {subtitle}
           </p>
         </div>
-
-        <select
-          value={type}
-          onChange={(e) => setType(e.target.value)}
-          style={{
-            width: "100%",
-            padding: 14,
-            borderRadius: 14,
-            border: "1px solid rgba(255,255,255,0.08)",
-            background: "rgba(255,255,255,0.04)",
-            color: "white",
-            marginBottom: 12,
-          }}
-        >
-          <option value="реклама">Реклама</option>
-          <option value="ответ">Ответ клиенту</option>
-          <option value="описание">Описание товара</option>
-          <option value="email">Email</option>
-        </select>
 
         <select
           value={language}
@@ -180,7 +166,7 @@ export default function GenerateClient({ initialType }: Props) {
         <input
           value={topic}
           onChange={(e) => setTopic(e.target.value)}
-          placeholder="Тема (например: доставка мебели)"
+          placeholder="Тема"
           style={{
             width: "100%",
             padding: 14,
