@@ -218,7 +218,7 @@ export default function WelcomePage() {
         </div>
 
         <button
-          onClick={() => router.push("/home")}
+          onClick={() => router.push("/login")}
           style={{
             width: "100%",
             padding: 17,

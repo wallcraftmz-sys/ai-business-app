@@ -100,6 +100,11 @@ function HistoryList() {
 }
 
 export default function HomePage() {
+  function handleLogout() {
+    localStorage.removeItem("session");
+    window.location.href = "/";
+  }
+
   return (
     <main
       style={{
@@ -126,6 +131,28 @@ export default function HomePage() {
           backdropFilter: "blur(18px)",
         }}
       >
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "flex-end",
+            marginBottom: 12,
+          }}
+        >
+          <button
+            onClick={handleLogout}
+            style={{
+              padding: "10px 14px",
+              borderRadius: 12,
+              border: "1px solid rgba(255,255,255,0.08)",
+              background: "rgba(255,255,255,0.03)",
+              color: "white",
+              cursor: "pointer",
+            }}
+          >
+            Выйти
+          </button>
+        </div>
+
         <div style={{ textAlign: "center", marginBottom: 18 }}>
           <div
             style={{
@@ -181,8 +208,12 @@ export default function HomePage() {
         </div>
 
         <div style={{ display: "grid", gap: 14 }}>
-          {cards.map((card) => {
-            const content = (
+          {cards.map((card) => (
+            <Link
+              key={card.title}
+              href={card.href}
+              style={{ textDecoration: "none", color: "inherit" }}
+            >
               <div
                 style={{
                   background: "rgba(255,255,255,0.04)",
@@ -253,30 +284,8 @@ export default function HomePage() {
                   ›
                 </div>
               </div>
-            );
-
-            if (card.href === "#history") {
-              return (
-                <a
-                  key={card.title}
-                  href="#history"
-                  style={{ textDecoration: "none", color: "inherit" }}
-                >
-                  {content}
-                </a>
-              );
-            }
-
-            return (
-              <Link
-                key={card.title}
-                href={card.href}
-                style={{ textDecoration: "none", color: "inherit" }}
-              >
-                {content}
-              </Link>
-            );
-          })}
+            </Link>
+          ))}
         </div>
 
         <div
