@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { supabase } from "@/lib/supabase";
 
 type Props = {
   fixedType: string;
@@ -49,6 +50,15 @@ export default function GenerateClient({
       }
 
       setResult(data.text || "");
+
+      await supabase.from("texts").insert([
+  {
+    text: data.text,
+    topic,
+    type: fixedType,
+    language,
+  },
+]);
 
       const history = JSON.parse(localStorage.getItem("history") || "[]");
 
