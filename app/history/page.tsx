@@ -2,28 +2,51 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { supabase } from "@/lib/supabase";
 
-type HistoryItem = {
+type TextItem = {
+  id: string;
   text: string;
-  topic: string;
-  type: string;
-  language?: string;
-  date: string;
+  topic: string | null;
+  type: string | null;
+  language: string | null;
+  created_at: string;
 };
 
 export default function HistoryPage() {
   const router = useRouter();
-  const [history, setHistory] = useState<HistoryItem[]>([]);
+  const [history, setHistory] = useState<TextItem[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  async function loadHistory() {
+    setLoading(true);
+
+    const { data, error } = await supabase
+      .from("texts")
+      .select("*")
+      .order("created_at", { ascending: false });
+
+    if (!error && data) {
+      setHistory(data);
+    }
+
+    setLoading(false);
+  }
+
+  async function clearHistory() {
+    const { error } = await supabase
+      .from("texts")
+      .delete()
+      .not("id", "is", null);
+
+    if (!error) {
+      setHistory([]);
+    }
+  }
 
   useEffect(() => {
-    const saved = JSON.parse(localStorage.getItem("history") || "[]");
-    setHistory(saved);
+    loadHistory();
   }, []);
-
-  function clearHistory() {
-    localStorage.removeItem("history");
-    setHistory([]);
-  }
 
   return (
     <main
@@ -63,12 +86,25 @@ export default function HistoryPage() {
           ← Назад
         </div>
 
-        <h1 style={{ fontSize: 30, margin: 0, fontWeight: 800, marginBottom: 10 }}>
+        <h1
+          style={{
+            fontSize: 30,
+            margin: 0,
+            fontWeight: 800,
+            marginBottom: 10,
+          }}
+        >
           История
         </h1>
 
-        <p style={{ color: "#aeb7cb", marginTop: 0, marginBottom: 16 }}>
-          Все сохранённые тексты
+        <p
+          style={{
+            color: "#aeb7cb",
+            marginTop: 0,
+            marginBottom: 16,
+          }}
+        >
+          Все сохранённые тексты из базы
         </p>
 
         <button
@@ -88,12 +124,14 @@ export default function HistoryPage() {
         </button>
 
         <div style={{ display: "grid", gap: 12 }}>
-          {history.length === 0 ? (
+          {loading ? (
+            <div style={{ color: "#9eabc3" }}>Загрузка...</div>
+          ) : history.length === 0 ? (
             <div style={{ color: "#9eabc3" }}>История пока пустая</div>
           ) : (
-            history.map((item, i) => (
+            history.map((item) => (
               <div
-                key={i}
+                key={item.id}
                 style={{
                   background: "rgba(255,255,255,0.04)",
                   border: "1px solid rgba(255,255,255,0.06)",
@@ -101,15 +139,28 @@ export default function HistoryPage() {
                   padding: 14,
                 }}
               >
-                <div style={{ fontWeight: 700, marginBottom: 6 }}>{item.type}</div>
+                <div style={{ fontWeight: 700, marginBottom: 6 }}>
+                  {item.type || "Без типа"}
+                </div>
+
                 <div style={{ color: "#b8c2d8", marginBottom: 6 }}>
                   {item.topic || "Без темы"}
                 </div>
-                <div style={{ color: "#99a5bc", lineHeight: 1.6, marginBottom: 8 }}>
+
+                <div
+                  style={{
+                    color: "#99a5bc",
+                    lineHeight: 1.6,
+                    marginBottom: 8,
+                    whiteSpace: "pre-wrap",
+                  }}
+                >
                   {item.text}
                 </div>
+
                 <div style={{ color: "#7f8aa3", fontSize: 12 }}>
-                  {item.language || "ru"} • {new Date(item.date).toLocaleString()}
+                  {item.language || "ru"} •{" "}
+                  {new Date(item.created_at).toLocaleString()}
                 </div>
               </div>
             ))

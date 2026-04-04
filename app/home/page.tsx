@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { supabase } from "@/lib/supabase";
 
 const cards = [
   {
@@ -40,11 +41,29 @@ type HistoryItem = {
 
 function HistoryList() {
   const [history, setHistory] = useState<HistoryItem[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const saved = JSON.parse(localStorage.getItem("history") || "[]");
-    setHistory(saved);
+    async function loadHistory() {
+      const { data, error } = await supabase
+        .from("texts")
+        .select("*")
+        .order("created_at", { ascending: false })
+        .limit(5);
+
+      if (!error && data) {
+        setHistory(data);
+      }
+
+      setLoading(false);
+    }
+
+    loadHistory();
   }, []);
+
+  if (loading) {
+    return <div style={{ color: "#9eabc3" }}>Загрузка...</div>;
+  }
 
   if (history.length === 0) {
     return <div style={{ color: "#9eabc3" }}>Пока нет сохранённых текстов</div>;
@@ -52,9 +71,9 @@ function HistoryList() {
 
   return (
     <div style={{ display: "grid", gap: 10 }}>
-      {history.slice(0, 5).map((item, i) => (
+      {history.map((item: any) => (
         <div
-          key={i}
+          key={item.id}
           style={{
             background: "rgba(255,255,255,0.04)",
             border: "1px solid rgba(255,255,255,0.06)",
