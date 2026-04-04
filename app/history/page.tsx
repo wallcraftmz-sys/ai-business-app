@@ -26,6 +26,9 @@ export default function HistoryPage() {
       .select("*")
       .order("created_at", { ascending: false });
 
+    console.log("history data:", data);
+    console.log("history error:", error);
+
     if (!error && data) {
       setHistory(data);
     }
@@ -38,6 +41,8 @@ export default function HistoryPage() {
       .from("texts")
       .delete()
       .not("id", "is", null);
+
+    console.log("clearHistory error:", error);
 
     if (!error) {
       setHistory([]);

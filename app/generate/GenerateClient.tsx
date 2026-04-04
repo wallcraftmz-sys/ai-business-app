@@ -51,14 +51,16 @@ export default function GenerateClient({
 
       setResult(data.text || "");
 
-      await supabase.from("texts").insert([
-  {
-    text: data.text,
-    topic,
-    type: fixedType,
-    language,
-  },
-]);
+      const { error: insertError } = await supabase.from("texts").insert([
+        {
+          text: data.text,
+          topic,
+          type: fixedType,
+          language,
+        },
+      ]);
+
+      console.log("insertError:", insertError);
 
       const history = JSON.parse(localStorage.getItem("history") || "[]");
 
@@ -71,7 +73,8 @@ export default function GenerateClient({
       });
 
       localStorage.setItem("history", JSON.stringify(history.slice(0, 20)));
-    } catch {
+    } catch (error) {
+      console.log("handleGenerate error:", error);
       setResult("Ошибка запроса");
     } finally {
       setLoading(false);
