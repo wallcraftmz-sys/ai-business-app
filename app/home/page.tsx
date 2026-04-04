@@ -23,6 +23,34 @@ const cards = [
     href: "/generate/product",
     icon: "🏷️",
   },
+
+  // 🔥 НОВОЕ
+
+  {
+    title: "Учёба",
+    description: "Помощь для школы и университета",
+    href: "/generate/study",
+    icon: "📚",
+  },
+  {
+    title: "Маркетинг",
+    description: "Тексты для начинающих маркетологов",
+    href: "/generate/marketing",
+    icon: "📈",
+  },
+  {
+    title: "Соцсети",
+    description: "Посты для TikTok / Instagram",
+    href: "/generate/social",
+    icon: "📱",
+  },
+  {
+    title: "Резюме",
+    description: "Создать CV и тексты для работы",
+    href: "/generate/cv",
+    icon: "🧑‍💼",
+  },
+
   {
     title: "История",
     description: "Посмотреть прошлые тексты",

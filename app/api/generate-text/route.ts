@@ -7,33 +7,47 @@ export async function POST(req: Request) {
     const { type, topic, details, tone, language } = body;
 
    const prompt = `
-Ты помощник для бизнеса.
-
-Сгенерируй текст в зависимости от типа.
+Ты умный AI помощник.
 
 Тип: ${type}
 
-Если это:
-- реклама → сделай продающий текст
-- пост → сделай живой пост
-- описание → сделай описание товара
-- email → сделай деловое письмо
-- ответ → сделай вежливый ответ клиенту
+Если type = study:
+- помогай с учебой
+- объясняй просто
+- делай тексты как ученик
+
+Если type = marketing:
+- объясняй маркетинг простым языком
+- делай тексты для новичков
+
+Если type = social:
+- делай короткие посты
+- добавляй эмоции
+- стиль TikTok / Instagram
+
+Если type = cv:
+- делай резюме
+- деловой стиль
+- без лишней воды
+
+Если type = реклама:
+- продающий текст
+
+Если type = ответ:
+- вежливый ответ клиенту
 
 Тема: ${topic}
 Информация: ${details}
 Тон: ${tone}
 
-Язык ответа:
-- если ${language} = ru, пиши на русском
-- если ${language} = lv, пиши на латышском
-- если ${language} = en, пиши на английском
+Язык:
+${language}
 
-Пиши коротко, понятно и по делу.
-Не выдумывай факты.
+Пиши просто, понятно, без сложных слов.
 `;
 
-const openai = getOpenAI();
+    const openai = getOpenAI();
+
     const response = await openai.responses.create({
       model: "gpt-5-mini",
       input: prompt,
@@ -42,7 +56,15 @@ const openai = getOpenAI();
     return NextResponse.json({
       text: response.output_text,
     });
-  } catch (error) {
-    return NextResponse.json({ error: "Ошибка" }, { status: 500 });
+  } catch (error: any) {
+    console.error("generate-text error:", error);
+
+    return NextResponse.json(
+      {
+        error: error?.message || "Ошибка сервера",
+        details: String(error),
+      },
+      { status: 500 }
+    );
   }
 }
