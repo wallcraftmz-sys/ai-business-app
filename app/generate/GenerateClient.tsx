@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 
@@ -8,6 +8,26 @@ type Props = {
   fixedType: string;
   title: string;
   subtitle: string;
+};
+
+const topicSuggestions: Record<string, string[]> = {
+  ad: ["Продажа айфона", "Доставка мебели", "Салон красоты", "Кофейня"],
+  reply: ["Жалоба на доставку", "Клиент просит скидку", "Нет товара в наличии", "Задержка заказа"],
+  product: ["Беспроводные наушники", "Кроссовки", "Жидкие обои", "Ноутбук"],
+  study: ["Объясни фотосинтез", "Помоги с эссе", "Краткий конспект темы", "План ответа"],
+  marketing: ["Как продвигать магазин", "Идея акции", "Контент-план", "Реклама для Instagram"],
+  social: ["Пост для TikTok", "Пост для Instagram", "Идея Stories", "Продающий пост"],
+  cv: ["Резюме для продавца", "CV без опыта", "Описание навыков", "Сопроводительное письмо"],
+};
+
+const detailsSuggestions: Record<string, string[]> = {
+  ad: ["Укажи выгоды, цену и призыв к действию", "Сделай коротко и цепляюще"],
+  reply: ["Ответ должен быть вежливым и спокойным", "Реши проблему без конфликта"],
+  product: ["Добавь преимущества и почему стоит купить", "Сделай описание понятным"],
+  study: ["Объясни простым языком", "Сделай как для школьника"],
+  marketing: ["Дай пошагово", "Сделай для новичка"],
+  social: ["Добавь эмоции и хештеги", "Сделай короче и живее"],
+  cv: ["Сделай профессионально и без воды", "Структурируй как для работодателя"],
 };
 
 export default function GenerateClient({
@@ -22,10 +42,27 @@ export default function GenerateClient({
   const [language, setLanguage] = useState("ru");
   const [result, setResult] = useState("");
   const [loading, setLoading] = useState(false);
+  const [copied, setCopied] = useState(false);
+
+  const currentTopicSuggestions = useMemo(
+    () => topicSuggestions[fixedType] || ["Пример темы"],
+    [fixedType]
+  );
+
+  const currentDetailsSuggestions = useMemo(
+    () => detailsSuggestions[fixedType] || ["Сделай коротко и понятно"],
+    [fixedType]
+  );
 
   async function handleGenerate() {
+    if (!topic.trim()) {
+      setResult("Введите тему.");
+      return;
+    }
+
     try {
       setLoading(true);
+      setCopied(false);
       setResult("");
 
       const res = await fetch("/api/generate-text", {
@@ -37,7 +74,7 @@ export default function GenerateClient({
           type: fixedType,
           topic,
           details,
-          tone: "продающий",
+          tone: "современный, понятный, по делу",
           language,
         }),
       });
@@ -45,7 +82,7 @@ export default function GenerateClient({
       const data = await res.json();
 
       if (!res.ok) {
-        setResult(data.error || "Ошибка");
+        setResult(data.error || "Ошибка. Попробуй ещё раз.");
         return;
       }
 
@@ -75,15 +112,28 @@ export default function GenerateClient({
       localStorage.setItem("history", JSON.stringify(history.slice(0, 20)));
     } catch (error) {
       console.log("handleGenerate error:", error);
-      setResult("Ошибка запроса");
+      setResult("Ошибка запроса. Попробуй ещё раз.");
     } finally {
       setLoading(false);
     }
   }
 
-  function handleCopy() {
+  async function handleCopy() {
     if (!result) return;
-    navigator.clipboard.writeText(result);
+    await navigator.clipboard.writeText(result);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1500);
+  }
+
+  function fillExampleTopic(value: string) {
+    setTopic(value);
+  }
+
+  function fillExampleDetails(value: string) {
+    setDetails((prev) => {
+      if (!prev.trim()) return value;
+      return prev;
+    });
   }
 
   return (
@@ -95,16 +145,15 @@ export default function GenerateClient({
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        padding: "24px 16px",
+        padding: "24px 16px 48px",
         color: "white",
       }}
     >
       <div
         style={{
           width: "100%",
-          maxWidth: 430,
-          minHeight: 820,
-          borderRadius: 36,
+          maxWidth: 460,
+          borderRadius: 32,
           padding: 20,
           background: "rgba(13, 17, 27, 0.82)",
           border: "1px solid rgba(255,255,255,0.08)",
@@ -119,6 +168,7 @@ export default function GenerateClient({
             cursor: "pointer",
             color: "#9db0ff",
             fontSize: 16,
+            fontWeight: 600,
           }}
         >
           ← Назад
@@ -127,8 +177,8 @@ export default function GenerateClient({
         <div style={{ textAlign: "center", marginBottom: 18 }}>
           <div
             style={{
-              width: 72,
-              height: 72,
+              width: 76,
+              height: 76,
               margin: "0 auto 14px",
               borderRadius: 22,
               background:
@@ -139,10 +189,17 @@ export default function GenerateClient({
               boxShadow: "0 12px 40px rgba(120,100,255,0.35)",
             }}
           >
-            <span style={{ fontSize: 30 }}>⚡</span>
+            <span style={{ fontSize: 32 }}>⚡</span>
           </div>
 
-          <h1 style={{ fontSize: 30, margin: 0, fontWeight: 800 }}>
+          <h1
+            style={{
+              fontSize: 32,
+              margin: 0,
+              fontWeight: 800,
+              lineHeight: 1.1,
+            }}
+          >
             {title}
           </h1>
 
@@ -152,63 +209,164 @@ export default function GenerateClient({
               marginTop: 10,
               marginBottom: 0,
               lineHeight: 1.5,
+              fontSize: 16,
             }}
           >
             {subtitle}
           </p>
         </div>
 
-        <select
-          value={language}
-          onChange={(e) => setLanguage(e.target.value)}
+        <div
           style={{
-            width: "100%",
-            padding: 14,
-            borderRadius: 14,
-            border: "1px solid rgba(255,255,255,0.08)",
-            background: "rgba(255,255,255,0.04)",
-            color: "white",
-            marginBottom: 12,
+            display: "grid",
+            gap: 12,
+            marginBottom: 14,
           }}
         >
-          <option value="ru">Русский</option>
-          <option value="lv">Latviešu</option>
-          <option value="en">English</option>
-        </select>
+          <div>
+            <div
+              style={{
+                marginBottom: 8,
+                color: "#cfd6e6",
+                fontSize: 14,
+                fontWeight: 700,
+              }}
+            >
+              Язык
+            </div>
 
-        <input
-          value={topic}
-          onChange={(e) => setTopic(e.target.value)}
-          placeholder="Тема"
-          style={{
-            width: "100%",
-            padding: 14,
-            borderRadius: 14,
-            border: "1px solid rgba(255,255,255,0.08)",
-            background: "rgba(255,255,255,0.04)",
-            color: "white",
-            marginBottom: 12,
-            boxSizing: "border-box",
-          }}
-        />
+            <select
+              value={language}
+              onChange={(e) => setLanguage(e.target.value)}
+              style={{
+                width: "100%",
+                padding: 14,
+                borderRadius: 14,
+                border: "1px solid rgba(255,255,255,0.08)",
+                background: "rgba(255,255,255,0.04)",
+                color: "white",
+              }}
+            >
+              <option value="ru">Русский</option>
+              <option value="lv">Latviešu</option>
+              <option value="en">English</option>
+            </select>
+          </div>
 
-        <textarea
-          value={details}
-          onChange={(e) => setDetails(e.target.value)}
-          placeholder="Детали..."
-          rows={5}
-          style={{
-            width: "100%",
-            padding: 14,
-            borderRadius: 14,
-            border: "1px solid rgba(255,255,255,0.08)",
-            background: "rgba(255,255,255,0.04)",
-            color: "white",
-            marginBottom: 14,
-            boxSizing: "border-box",
-            resize: "vertical",
-          }}
-        />
+          <div>
+            <div
+              style={{
+                marginBottom: 8,
+                color: "#cfd6e6",
+                fontSize: 14,
+                fontWeight: 700,
+              }}
+            >
+              Тема
+            </div>
+
+            <input
+              value={topic}
+              onChange={(e) => setTopic(e.target.value)}
+              placeholder="Например: Продажа айфона"
+              style={{
+                width: "100%",
+                padding: 14,
+                borderRadius: 14,
+                border: "1px solid rgba(255,255,255,0.08)",
+                background: "rgba(255,255,255,0.04)",
+                color: "white",
+                boxSizing: "border-box",
+              }}
+            />
+
+            <div
+              style={{
+                display: "flex",
+                gap: 8,
+                flexWrap: "wrap",
+                marginTop: 10,
+              }}
+            >
+              {currentTopicSuggestions.map((item) => (
+                <button
+                  key={item}
+                  type="button"
+                  onClick={() => fillExampleTopic(item)}
+                  style={{
+                    border: "1px solid rgba(255,255,255,0.08)",
+                    background: "rgba(255,255,255,0.04)",
+                    color: "#dce2f1",
+                    borderRadius: 999,
+                    padding: "8px 12px",
+                    fontSize: 13,
+                    cursor: "pointer",
+                  }}
+                >
+                  {item}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <div
+              style={{
+                marginBottom: 8,
+                color: "#cfd6e6",
+                fontSize: 14,
+                fontWeight: 700,
+              }}
+            >
+              Детали
+            </div>
+
+            <textarea
+              value={details}
+              onChange={(e) => setDetails(e.target.value)}
+              placeholder="Добавь важные детали, стиль, аудиторию, ограничения..."
+              rows={5}
+              style={{
+                width: "100%",
+                padding: 14,
+                borderRadius: 14,
+                border: "1px solid rgba(255,255,255,0.08)",
+                background: "rgba(255,255,255,0.04)",
+                color: "white",
+                boxSizing: "border-box",
+                resize: "vertical",
+              }}
+            />
+
+            <div
+              style={{
+                display: "flex",
+                gap: 8,
+                flexWrap: "wrap",
+                marginTop: 10,
+              }}
+            >
+              {currentDetailsSuggestions.map((item) => (
+                <button
+                  key={item}
+                  type="button"
+                  onClick={() => fillExampleDetails(item)}
+                  style={{
+                    border: "1px solid rgba(255,255,255,0.08)",
+                    background: "rgba(255,255,255,0.04)",
+                    color: "#dce2f1",
+                    borderRadius: 999,
+                    padding: "8px 12px",
+                    fontSize: 13,
+                    cursor: "pointer",
+                  }}
+                >
+                  {item}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
 
         <button
           onClick={handleGenerate}
@@ -230,14 +388,14 @@ export default function GenerateClient({
               : "0 14px 40px rgba(120,100,255,0.35)",
           }}
         >
-          {loading ? "Генерация..." : "Сгенерировать"}
+          {loading ? "AI думает..." : "Сгенерировать"}
         </button>
 
         <div
           style={{
             marginTop: 20,
             background: "rgba(255,255,255,0.04)",
-            borderRadius: 18,
+            borderRadius: 20,
             padding: 14,
             border: "1px solid rgba(255,255,255,0.06)",
           }}
@@ -250,7 +408,7 @@ export default function GenerateClient({
               alignItems: "center",
             }}
           >
-            <div style={{ fontWeight: 700 }}>Результат</div>
+            <h3 style={{ margin: 0, fontSize: 20 }}>Результат</h3>
 
             <button
               onClick={handleCopy}
@@ -264,22 +422,71 @@ export default function GenerateClient({
                 cursor: "pointer",
               }}
             >
-              Копировать
+              {copied ? "Скопировано ✔" : "Копировать"}
             </button>
           </div>
 
-          <div
+          <textarea
+            value={result || "Здесь появится готовый результат"}
+            readOnly
             style={{
+              width: "100%",
+              minHeight: 220,
+              borderRadius: 14,
+              padding: 12,
+              background: "rgba(255,255,255,0.03)",
+              border: "1px solid rgba(255,255,255,0.08)",
               color: "#d4dbeb",
               lineHeight: 1.6,
-              minHeight: 90,
-              whiteSpace: "pre-wrap",
+              resize: "vertical",
+              boxSizing: "border-box",
             }}
-          >
-            {result || "Здесь появится текст"}
-          </div>
+          />
+
+          {result && (
+            <div
+              style={{
+                display: "flex",
+                gap: 8,
+                flexWrap: "wrap",
+                marginTop: 10,
+              }}
+            >
+              <button
+                type="button"
+                onClick={() => setDetails((prev) => `${prev}\nСделай короче`)}
+                style={smallActionStyle}
+              >
+                Сделать короче
+              </button>
+              <button
+                type="button"
+                onClick={() => setDetails((prev) => `${prev}\nСделай более официально`)}
+                style={smallActionStyle}
+              >
+                Более официально
+              </button>
+              <button
+                type="button"
+                onClick={() => setDetails((prev) => `${prev}\nСделай более продающим`)}
+                style={smallActionStyle}
+              >
+                Более продающим
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </main>
   );
 }
+
+const smallActionStyle: React.CSSProperties = {
+  border: "1px solid rgba(255,255,255,0.08)",
+  background: "rgba(255,255,255,0.04)",
+  color: "#dce2f1",
+  borderRadius: 999,
+  padding: "8px 12px",
+  fontSize: 13,
+  cursor: "pointer",
+};
